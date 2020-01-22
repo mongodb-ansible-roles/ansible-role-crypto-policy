@@ -1,0 +1,12 @@
+---
+- name: Check if crypto policy is legacy
+  become: true
+  shell: update-crypto-policies --show | grep LEGACY
+  register: crypto_policy
+  changed_when: false
+  ignore_errors: true
+
+- name: Set crypto policy to legacy
+  become: true
+  command: update-crypto-policies --set LEGACY
+  when: crypto_policy is failed
